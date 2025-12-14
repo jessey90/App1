@@ -1,4 +1,4 @@
-# Phase 1 MVP — Project Workspace
+# Anonymous Gossip Corporate — Phase 1 MVP Workspace
 
 This repository is being implemented **incrementally** according to:
 - `REQUIREMENTS_PHASE1_MVP.md` (source of truth)

@@ -2,6 +2,8 @@
 
 ## 1. Development Philosophy for MVP
 
+**Official Product Name (Phase 1 MVP): Anonymous Gossip Corporate**
+
 ### Speed vs Quality Trade-offs
 - **Prioritize speed-to-learning** over perfect architecture.
 - **Do not compromise** on privacy/anonymity constraints and moderation safeguards.

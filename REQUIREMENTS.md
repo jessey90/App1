@@ -1,9 +1,9 @@
-# REQUIREMENTS.md — Anonymous Career Gossip & Future Jobs Advisor
+# REQUIREMENTS.md — Anonymous Gossip Corporate
 
 ## 1. Product Overview
 
 ### 1.1 Product Name (Working Title)
-**Anonymous Career Gossip & Future Jobs Advisor**
+**Anonymous Gossip Corporate**
 
 ### 1.2 Platforms
 - **iOS**
