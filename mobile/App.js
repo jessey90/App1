@@ -119,9 +119,9 @@ function CompanyListScreen({ onSelect }) {
     <Screen>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 12 }}>
-          <H1>Company Tea</H1>
+          <H1>Anonymous Gossip Corporate</H1>
           <P style={{ marginTop: 8 }}>
-            Anonymous, community-led insights. Keep it safe: no names, emails, phone numbers.
+            Anonymous, community-led insights.
           </P>
           <TextInput
             value={query}
