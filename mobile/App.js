@@ -16,16 +16,28 @@ import { generateBasicInsights } from "./src/insights";
 import { clearProfile, defaultProfile, loadProfile, saveProfile } from "./src/profileStore";
 import { getOrCreateClientKey } from "./src/clientKeyStore";
 import {
+  Alert,
+  Body,
+  BodyStrong,
+  ButtonDanger,
   ButtonGhost,
   ButtonPrimary,
+  ButtonSecondary,
+  Caption,
   Card,
+  Chip,
+  Display,
   Divider,
+  EmptyState,
   H1,
   H2,
+  Micro,
   P,
   Pill,
   Screen,
   Small,
+  TextInput as UITextInput,
+  tokens,
   theme,
 } from "./src/ui";
 
@@ -61,24 +73,20 @@ function randomAnonLabel() {
 
 function SectionTitle({ children }) {
   return (
-    <Text style={{ color: theme.colors.text, ...theme.type.h2, marginBottom: 12 }}>
+    <H2 style={{ marginBottom: tokens.spacing[12] }}>
       {children}
-    </Text>
+    </H2>
   );
-}
-
-function Chip({ label, selected, onPress }) {
-  return <Pill label={label} selected={selected} onPress={onPress} />;
 }
 
 function BackHeader({ title, onBack }) {
   return (
     <View
       style={{
-        paddingHorizontal: 16,
-        paddingTop: 10,
-        paddingBottom: 12,
-        backgroundColor: theme.colors.bg,
+        paddingHorizontal: tokens.spacing[16],
+        paddingTop: tokens.spacing[12],
+        paddingBottom: tokens.spacing[12],
+        backgroundColor: tokens.color.background,
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -87,22 +95,22 @@ function BackHeader({ title, onBack }) {
             onPress={onBack}
             accessibilityRole="button"
             style={{
-              paddingVertical: 8,
-              paddingRight: 16,
+              paddingVertical: tokens.spacing[8],
+              paddingRight: tokens.spacing[16],
               paddingLeft: 6,
               marginLeft: -6,
             }}
           >
-            <Text style={{ color: theme.colors.text, fontSize: 15, fontWeight: "800" }}>
-              Back
-            </Text>
+            <BodyStrong style={{ color: tokens.color.primary600 }}>
+              ← Back
+            </BodyStrong>
           </Pressable>
         ) : null}
-        <Text style={{ color: theme.colors.text, ...theme.type.h2 }}>{title}</Text>
+        <H2>{title}</H2>
       </View>
-      <Small style={{ marginTop: 8 }}>
+      <Caption style={{ marginTop: tokens.spacing[8] }}>
         Anonymous by default. No usernames. No accounts.
-      </Small>
+      </Caption>
     </View>
   );
 }
@@ -118,51 +126,46 @@ function CompanyListScreen({ onSelect }) {
   return (
     <Screen>
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 12 }}>
-          <H1>Anonymous Gossip Corporate</H1>
-          <P style={{ marginTop: 8 }}>
+        <View style={{ 
+          paddingHorizontal: tokens.spacing[16], 
+          paddingTop: tokens.spacing[16], 
+          paddingBottom: tokens.spacing[16] 
+        }}>
+          <Display style={{ marginBottom: tokens.spacing[8] }}>
+            Anonymous Company Reviews
+          </Display>
+          <P style={{ marginBottom: tokens.spacing[16] }}>
             Anonymous, community-led insights.
           </P>
-          <TextInput
+          <UITextInput
             value={query}
             onChangeText={setQuery}
             placeholder="Search a company"
-            placeholderTextColor={theme.colors.subtle}
             autoCapitalize="none"
-            style={{
-              marginTop: 14,
-              borderWidth: 1,
-              borderColor: theme.colors.border,
-              borderRadius: 14,
-              paddingHorizontal: 12,
-              paddingVertical: 12,
-              backgroundColor: theme.colors.bg,
-              color: theme.colors.text,
-            }}
           />
         </View>
 
         <FlatList
           data={filtered}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 90 }}
+          contentContainerStyle={{ 
+            paddingHorizontal: tokens.spacing[16], 
+            paddingBottom: 90 
+          }}
           renderItem={({ item }) => (
-            <Pressable
+            <Card 
               onPress={() => onSelect(item)}
-              accessibilityRole="button"
-              style={{ marginBottom: 10 }}
+              style={{ marginBottom: tokens.spacing[12] }}
             >
-              <Card>
-                <H2>{item.name}</H2>
-                <Small style={{ marginTop: 6 }}>
-                  Tap to browse categories and threads
-                </Small>
-              </Card>
-            </Pressable>
+              <H2>{item.name}</H2>
+              <Caption style={{ marginTop: tokens.spacing[8] }}>
+                Tap to browse categories and threads
+              </Caption>
+            </Card>
           )}
           ListEmptyComponent={
-            <View style={{ paddingHorizontal: 16, paddingTop: 12 }}>
-              <Small>No companies match that search.</Small>
+            <View style={{ paddingTop: tokens.spacing[16] }}>
+              <Caption>No companies match that search.</Caption>
             </View>
           }
         />
@@ -192,41 +195,40 @@ function CompanyDetailScreen({
       <SafeAreaView style={{ flex: 1 }}>
         <BackHeader title={company.name} onBack={onBack} />
 
-        <View style={{ paddingHorizontal: 16, paddingBottom: 12 }}>
+        <View style={{ paddingHorizontal: tokens.spacing[16], paddingBottom: tokens.spacing[16] }}>
           <ButtonPrimary
-            label={isLocked?.(category) ? "Locked (Admin)" : "Drop Tea"}
+            label={isLocked?.(category) ? "Locked (Admin)" : "Drop Tea ☕"}
             disabled={Boolean(isLocked?.(category))}
             onPress={() => onCreatePost(category)}
           />
           {isLocked?.(category) ? (
-            <Small style={{ marginTop: 10 }}>
-              Posting is locked for this company/category (admin action).
-            </Small>
+            <Alert variant="warning" style={{ marginTop: tokens.spacing[12] }}>
+              <Caption>Posting is locked for this company/category (admin action).</Caption>
+            </Alert>
           ) : (
-            <Small style={{ marginTop: 10 }}>
+            <Caption style={{ marginTop: tokens.spacing[12], textAlign: "center" }}>
               Post anonymously. Do not include identifying info.
-            </Small>
+            </Caption>
           )}
 
           <Divider />
 
-          <Small style={{ marginBottom: 8 }}>Category</Small>
+          <Caption style={{ marginBottom: tokens.spacing[8] }}>Category</Caption>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {CATEGORIES.map((c) => (
-              <Pill
+              <Chip
                 key={c.key}
                 label={c.label}
                 selected={c.key === category}
                 onPress={() => setCategory(c.key)}
-                tone="accent"
               />
             ))}
           </ScrollView>
 
-          <View style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
-            <Small style={{ marginRight: 10 }}>Sort</Small>
-            <Pill label="Newest" selected={sort === "newest"} onPress={() => setSort("newest")} />
-            <Pill label="Top" selected={sort === "top"} onPress={() => setSort("top")} />
+          <View style={{ flexDirection: "row", alignItems: "center", marginTop: tokens.spacing[16] }}>
+            <Caption style={{ marginRight: tokens.spacing[12] }}>Sort</Caption>
+            <Chip label="Newest" selected={sort === "newest"} onPress={() => setSort("newest")} />
+            <Chip label="Top" selected={sort === "top"} onPress={() => setSort("top")} />
           </View>
         </View>
 
@@ -234,27 +236,25 @@ function CompanyDetailScreen({
           data={data}
           keyExtractor={(item) => item.id}
           ListEmptyComponent={
-            <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-              <Small>
-                No threads yet in {getCategoryLabel(category)}. Be the first (safely).
-              </Small>
-            </View>
+            <EmptyState
+              title="No threads yet"
+              message={`Be the first to share in ${getCategoryLabel(category)} (safely and anonymously).`}
+            />
           }
-          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 90 }}
+          contentContainerStyle={{ paddingHorizontal: tokens.spacing[16], paddingBottom: 90 }}
           renderItem={({ item }) => (
-            <Pressable onPress={() => onOpenPost(item.id)} accessibilityRole="button">
-              <View style={{ marginBottom: 10 }}>
-                <Card>
-                  <H2>{item.title}</H2>
-                  <P style={{ marginTop: 8 }} numberOfLines={2}>
-                    {item.body}
-                  </P>
-                  <Small style={{ marginTop: 10 }}>
-                    {item.authorLabel ?? "Anonymous"} • {item.createdDate}
-                  </Small>
-                </Card>
-              </View>
-            </Pressable>
+            <Card 
+              onPress={() => onOpenPost(item.id)}
+              style={{ marginBottom: tokens.spacing[12] }}
+            >
+              <H2>{item.title}</H2>
+              <Body style={{ marginTop: tokens.spacing[8] }} numberOfLines={2}>
+                {item.body}
+              </Body>
+              <Caption style={{ marginTop: tokens.spacing[12] }}>
+                {item.authorLabel ?? "Anonymous"} • {item.createdDate}
+              </Caption>
+            </Card>
           )}
         />
       </SafeAreaView>
@@ -268,97 +268,86 @@ function PostDetailScreen({ postId, onBack, companyName, posts, onReport }) {
   const [reportReason, setReportReason] = React.useState("doxxing_or_identity");
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <BackHeader title={companyName} onBack={onBack} />
-      <View style={{ paddingHorizontal: 16, paddingTop: 4 }}>
-        {post ? (
-          <>
-            <Text style={{ fontSize: 18, fontWeight: "700" }}>{post.title}</Text>
-            <Text style={{ marginTop: 10, color: "#444", fontSize: 13 }}>
-              {getCategoryLabel(post.category)} • {post.authorLabel ?? "Anonymous"} •{" "}
-              {post.createdDate}
-            </Text>
-            <View style={{ marginTop: 14 }}>
-              <Text style={{ fontSize: 15, lineHeight: 22 }}>{post.body}</Text>
-            </View>
-            <View style={{ marginTop: 18 }}>
-              <Text style={{ color: "#666", fontSize: 13 }}>
-                Reporting is available in Milestone 6. Voting is not implemented.
-              </Text>
-            </View>
+    <Screen>
+      <SafeAreaView style={{ flex: 1 }}>
+        <BackHeader title={companyName} onBack={onBack} />
+        <ScrollView contentContainerStyle={{ paddingHorizontal: tokens.spacing[16], paddingBottom: tokens.spacing[24] }}>
+          {post ? (
+            <>
+              <H1 style={{ marginBottom: tokens.spacing[12] }}>{post.title}</H1>
+              <Caption style={{ marginBottom: tokens.spacing[16] }}>
+                {getCategoryLabel(post.category)} • {post.authorLabel ?? "Anonymous"} •{" "}
+                {post.createdDate}
+              </Caption>
+              
+              <Card>
+                <Body>{post.body}</Body>
+              </Card>
 
-            <View style={{ marginTop: 18 }}>
-              <Pressable
-                onPress={() => setShowReport((v) => !v)}
-                accessibilityRole="button"
-                style={{
-                  alignSelf: "flex-start",
-                  paddingVertical: 10,
-                  paddingHorizontal: 12,
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  borderColor: "#111",
-                  backgroundColor: "#fff",
-                }}
-              >
-                <Text style={{ fontWeight: "800" }}>
-                  {showReport ? "Cancel" : "Report"}
-                </Text>
-              </Pressable>
-            </View>
+              <Alert variant="info" style={{ marginTop: tokens.spacing[16] }}>
+                <Caption>
+                  Reporting is available. Voting is not implemented in Phase 1 MVP.
+                </Caption>
+              </Alert>
 
-            {showReport ? (
-              <View style={{ marginTop: 12 }}>
-                <Text style={{ color: "#444", fontSize: 13, marginBottom: 8 }}>
-                  Reason
-                </Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {[
-                    { key: "doxxing_or_identity", label: "Doxxing / Identity" },
-                    { key: "hate_or_harassment", label: "Hate / Harassment" },
-                    { key: "illegal_or_harm", label: "Illegal / Harm" },
-                    { key: "other", label: "Other" },
-                  ].map((r) => (
-                    <Chip
-                      key={r.key}
-                      label={r.label}
-                      selected={r.key === reportReason}
-                      onPress={() => setReportReason(r.key)}
-                    />
-                  ))}
-                </ScrollView>
-                <Pressable
-                  onPress={() => {
-                    onReport?.(post.id, reportReason);
-                    setShowReport(false);
-                  }}
-                  accessibilityRole="button"
-                  style={{
-                    marginTop: 12,
-                    paddingVertical: 12,
-                    paddingHorizontal: 14,
-                    borderRadius: 12,
-                    backgroundColor: "#111",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={{ color: "#fff", fontWeight: "800" }}>
-                    Submit Report
-                  </Text>
-                </Pressable>
-                <Text
-                  style={{ marginTop: 10, color: "#666", fontSize: 12, lineHeight: 16 }}
-                >
-                  Reports are queued for admin review (MVP). No public identity is attached.
-                </Text>
+              <View style={{ marginTop: tokens.spacing[24] }}>
+                {!showReport ? (
+                  <ButtonSecondary
+                    label="Report this post"
+                    onPress={() => setShowReport(true)}
+                  />
+                ) : (
+                  <ButtonGhost
+                    label="Cancel"
+                    onPress={() => setShowReport(false)}
+                  />
+                )}
               </View>
-            ) : null}
-          </>
-        ) : (
-          <Text style={{ color: "#444" }}>Thread not found.</Text>
-        )}
-      </View>
-    </SafeAreaView>
+
+              {showReport ? (
+                <View style={{ marginTop: tokens.spacing[16] }}>
+                  <Caption style={{ marginBottom: tokens.spacing[8] }}>
+                    Reason
+                  </Caption>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {[
+                      { key: "doxxing_or_identity", label: "Doxxing / Identity" },
+                      { key: "hate_or_harassment", label: "Hate / Harassment" },
+                      { key: "illegal_or_harm", label: "Illegal / Harm" },
+                      { key: "other", label: "Other" },
+                    ].map((r) => (
+                      <Chip
+                        key={r.key}
+                        label={r.label}
+                        selected={r.key === reportReason}
+                        onPress={() => setReportReason(r.key)}
+                        variant={r.key === reportReason ? "danger" : "default"}
+                      />
+                    ))}
+                  </ScrollView>
+                  <ButtonPrimary
+                    label="Submit Report"
+                    onPress={() => {
+                      onReport?.(post.id, reportReason);
+                      setShowReport(false);
+                    }}
+                    style={{ marginTop: tokens.spacing[16] }}
+                  />
+                  <Caption style={{ marginTop: tokens.spacing[12], textAlign: "center" }}>
+                    Reports are queued for admin review (MVP). No public identity is attached.
+                  </Caption>
+                </View>
+              ) : null}
+            </>
+          ) : (
+            <EmptyState
+              title="Thread not found"
+              message="This post may have been removed or doesn't exist."
+            />
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </Screen>
   );
 }
 
@@ -437,92 +426,80 @@ function CreatePostScreen({
     <Screen>
       <SafeAreaView style={{ flex: 1 }}>
         <BackHeader title={`Drop Tea — ${company.name}`} onBack={onBack} />
-        <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 90 }}>
-          <Card>
-            <H2>Stay anonymous</H2>
-            <Small style={{ marginTop: 8 }}>
-              Don’t include names, emails, phone numbers, addresses, or anything that can identify
-              someone.
-            </Small>
+        <ScrollView contentContainerStyle={{ 
+          paddingHorizontal: tokens.spacing[16], 
+          paddingBottom: 90 
+        }}>
+          <Alert variant="info" style={{ marginBottom: tokens.spacing[16] }}>
+            <BodyStrong style={{ marginBottom: tokens.spacing[8] }}>Stay anonymous</BodyStrong>
+            <Caption>
+              Don't include names, emails, phone numbers, addresses, or anything that can identify someone.
+            </Caption>
             {isBanned ? (
-              <Small style={{ marginTop: 10, color: theme.colors.warning }}>
-                Posting is blocked on this device (admin ban).
-              </Small>
+              <Alert variant="danger" style={{ marginTop: tokens.spacing[12] }}>
+                <Caption>Posting is blocked on this device (admin ban).</Caption>
+              </Alert>
             ) : null}
-          </Card>
+          </Alert>
 
-          <Small style={{ marginTop: 16, marginBottom: 8 }}>Category</Small>
+          <Caption style={{ marginBottom: tokens.spacing[8] }}>Category</Caption>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {CATEGORIES.map((c) => (
-              <Pill
+              <Chip
                 key={c.key}
                 label={c.label}
                 selected={c.key === category}
                 onPress={() => setCategory(c.key)}
-                tone="accent"
               />
             ))}
           </ScrollView>
 
-          <Small style={{ marginTop: 16, marginBottom: 8 }}>Title (optional)</Small>
-          <TextInput
+          <Caption style={{ marginTop: tokens.spacing[16], marginBottom: tokens.spacing[8] }}>
+            Title (optional)
+          </Caption>
+          <UITextInput
             value={title}
             onChangeText={setTitle}
             placeholder="Short summary"
-            placeholderTextColor={theme.colors.subtle}
-            style={{
-              borderWidth: 1,
-              borderColor: theme.colors.border,
-              borderRadius: 14,
-              paddingHorizontal: 12,
-              paddingVertical: 12,
-              backgroundColor: theme.colors.bg,
-              color: theme.colors.text,
-            }}
+            autoCapitalize="sentences"
           />
 
-          <Small style={{ marginTop: 16, marginBottom: 8 }}>Body</Small>
-          <TextInput
+          <Caption style={{ marginTop: tokens.spacing[16], marginBottom: tokens.spacing[8] }}>
+            Body
+          </Caption>
+          <UITextInput
             value={body}
             onChangeText={setBody}
             placeholder="Write your post (text only)"
-            placeholderTextColor={theme.colors.subtle}
             multiline
-            style={{
-              borderWidth: 1,
-              borderColor: theme.colors.border,
-              borderRadius: 14,
-              paddingHorizontal: 12,
-              paddingVertical: 12,
-              minHeight: 160,
-              backgroundColor: theme.colors.bg,
-              color: theme.colors.text,
-              textAlignVertical: "top",
-            }}
+            numberOfLines={8}
+            style={{ minHeight: 160, textAlignVertical: "top" }}
           />
 
           {error ? (
-            <Small style={{ marginTop: 10, color: theme.colors.warning }}>{error}</Small>
+            <Alert variant="warning" style={{ marginTop: tokens.spacing[16] }}>
+              <Caption>{error}</Caption>
+            </Alert>
           ) : null}
 
           {blockedReasons ? (
-            <Card style={{ marginTop: 12, borderColor: theme.colors.border }}>
-              <Text style={{ color: theme.colors.text, fontWeight: "900" }}>
+            <Alert variant="danger" style={{ marginTop: tokens.spacing[16] }}>
+              <BodyStrong style={{ marginBottom: tokens.spacing[8] }}>
                 Blocked (safety check)
-              </Text>
+              </BodyStrong>
               {blockedReasons.map((r, idx) => (
-                <Small key={`${idx}-${r}`} style={{ marginTop: 6, color: theme.colors.text }}>
-                  - {r}
-                </Small>
+                <Caption key={`${idx}-${r}`} style={{ marginTop: tokens.spacing[4] }}>
+                  • {r}
+                </Caption>
               ))}
-            </Card>
+            </Alert>
           ) : null}
 
-          <View style={{ marginTop: 16 }}>
-            <ButtonPrimary label="Post" onPress={submitDraft} disabled={Boolean(isBanned)} />
-            <Small style={{ marginTop: 10 }}>
+          <View style={{ marginTop: tokens.spacing[24] }}>
+            <ButtonPrimary label="Post ☕" onPress={submitDraft} disabled={Boolean(isBanned)} />
+            <Caption style={{ marginTop: tokens.spacing[12], textAlign: "center" }}>
               Posts can be visible, held for review, or blocked.
-            </Small>
+            </Caption>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -531,50 +508,52 @@ function CreatePostScreen({
 }
 
 function TabBar({ tab, onTab }) {
-  const Item = ({ id, label }) => (
-    <Pressable
-      onPress={() => onTab(id)}
-      accessibilityRole="button"
-      style={{
-        flex: 1,
-        paddingVertical: 10,
-        borderRadius: 14,
-        backgroundColor: tab === id ? theme.colors.card : "transparent",
-        borderWidth: 1,
-        borderColor: tab === id ? theme.colors.border : "transparent",
-        alignItems: "center",
-      }}
-    >
-      <Text
+  const Item = ({ id, label, emoji }) => {
+    const isSelected = tab === id;
+    return (
+      <Pressable
+        onPress={() => onTab(id)}
+        accessibilityRole="button"
         style={{
-          color: tab === id ? theme.colors.text : theme.colors.muted,
-          fontWeight: "900",
+          flex: 1,
+          paddingVertical: tokens.spacing[12],
+          borderRadius: tokens.radius.md,
+          backgroundColor: isSelected ? tokens.color.primary600 : "transparent",
+          alignItems: "center",
         }}
       >
-        {label}
-      </Text>
-    </Pressable>
-  );
+        <Text
+          style={{
+            color: isSelected ? "#FFFFFF" : tokens.color.textSecondary,
+            ...tokens.typography.bodyStrong,
+          }}
+        >
+          {emoji} {label}
+        </Text>
+      </Pressable>
+    );
+  };
 
   return (
     <View
       style={{
         position: "absolute",
-        left: 16,
-        right: 16,
-        bottom: 14,
-        backgroundColor: "#FFFFFF",
-        borderRadius: 18,
+        left: tokens.spacing[16],
+        right: tokens.spacing[16],
+        bottom: tokens.spacing[16],
+        backgroundColor: tokens.color.card,
+        borderRadius: tokens.radius.lg,
         borderWidth: 1,
-        borderColor: theme.colors.border,
-        padding: 8,
+        borderColor: tokens.color.border,
+        padding: tokens.spacing[8],
         flexDirection: "row",
-        gap: 8,
+        gap: tokens.spacing[8],
+        ...tokens.elevation.medium,
       }}
     >
-      <Item id="tea" label="Tea" />
-      <Item id="future" label="Future" />
-      <Item id="me" label="Me" />
+      <Item id="tea" label="Tea" emoji="☕" />
+      <Item id="future" label="Future" emoji="🔮" />
+      <Item id="me" label="Me" emoji="👤" />
     </View>
   );
 }
@@ -820,9 +799,12 @@ function FutureJobsScreen({ onBack, onEditProfile, profile, profileLoaded }) {
   return (
     <Screen>
       <SafeAreaView style={{ flex: 1 }}>
-        <BackHeader title="Future Jobs" onBack={onBack} />
-        <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 90 }}>
-          <View style={{ flexDirection: "row", gap: 10, marginBottom: 12 }}>
+        <BackHeader title="Future Jobs 🔮" onBack={onBack} />
+        <ScrollView contentContainerStyle={{ 
+          paddingHorizontal: tokens.spacing[16], 
+          paddingBottom: 90 
+        }}>
+          <View style={{ flexDirection: "row", gap: tokens.spacing[12], marginBottom: tokens.spacing[16] }}>
             <View style={{ flex: 1 }}>
               <ButtonPrimary
                 label={profileLoaded ? "Edit Profile" : "Loading…"}
@@ -834,51 +816,48 @@ function FutureJobsScreen({ onBack, onEditProfile, profile, profileLoaded }) {
             </View>
           </View>
 
-          <Card>
-            <H2>Plain-language, not a promise</H2>
-            <Small style={{ marginTop: 8 }}>
+          <Alert variant="info" style={{ marginBottom: tokens.spacing[16] }}>
+            <BodyStrong style={{ marginBottom: tokens.spacing[8] }}>
+              Plain-language, not a promise
+            </BodyStrong>
+            <Caption>
               This is a simplified, rules-based view using a small curated dataset inspired by
               WEF Future of Jobs themes. It is not a guarantee or prediction.
-            </Small>
-          </Card>
+            </Caption>
+          </Alert>
 
-        <View style={{ marginTop: 16 }}>
-          <Small>
-            Country: <Text style={{ color: theme.colors.text, fontWeight: "900" }}>{country}</Text>{" "}
-            • Industry:{" "}
-            <Text style={{ color: theme.colors.text, fontWeight: "900" }}>{industry}</Text>
-          </Small>
-          <Small style={{ marginTop: 6 }}>
-            Milestone 5: these come from your optional profile. If country is “global”, output
-            is a global fallback.
-          </Small>
-        </View>
+        <Card style={{ marginBottom: tokens.spacing[16] }}>
+          <Caption>
+            Country: <BodyStrong>{country}</BodyStrong>{" "}
+            • Industry: <BodyStrong>{industry}</BodyStrong>
+          </Caption>
+          <Micro style={{ marginTop: tokens.spacing[8] }}>
+            These come from your optional profile. If country is "global", output is a global fallback.
+          </Micro>
+        </Card>
 
-        <Card style={{ marginTop: 14 }}>
-          <Small>Summary</Small>
-          <P style={{ marginTop: 10, color: theme.colors.text }}>
-            {insights.summary_plain_language}
-          </P>
+        <Card>
+          <Caption style={{ marginBottom: tokens.spacing[8] }}>Summary</Caption>
+          <Body>{insights.summary_plain_language}</Body>
         </Card>
 
         <InsightsSection title="Jobs at risk (high-level)" items={insights.jobs_at_risk} />
         <InsightsSection title="Emerging roles (high-level)" items={insights.emerging_roles} />
         <InsightsSection title="Fast-growing skills" items={insights.fast_growing_skills} />
         <InsightsSection title="Declining skills" items={insights.declining_skills} />
-
         <InsightsSection
           title="What this means for you"
           items={insights.what_this_means_for_you}
         />
 
-        <Card style={{ marginTop: 16 }}>
-          <Small>Rationale</Small>
-          <Small style={{ marginTop: 8 }}>{insights.rationale}</Small>
+        <Card style={{ marginTop: tokens.spacing[16] }}>
+          <Caption style={{ marginBottom: tokens.spacing[8] }}>Rationale</Caption>
+          <Caption>{insights.rationale}</Caption>
         </Card>
 
-        <Small style={{ marginTop: 14 }}>
+        <Caption style={{ marginTop: tokens.spacing[16], textAlign: "center" }}>
           No scenario modeling. No predictions. Just guidance you can act on.
-        </Small>
+        </Caption>
       </ScrollView>
     </SafeAreaView>
     </Screen>
@@ -887,13 +866,13 @@ function FutureJobsScreen({ onBack, onEditProfile, profile, profileLoaded }) {
 
 function InsightsSection({ title, items }) {
   return (
-    <Card style={{ marginTop: 14 }}>
-      <Small>{title}</Small>
-      <View style={{ marginTop: 8 }}>
-        {items.map((item) => (
-          <Text key={item} style={{ color: theme.colors.text, lineHeight: 20, marginTop: 8 }}>
+    <Card style={{ marginTop: tokens.spacing[16] }}>
+      <Caption style={{ marginBottom: tokens.spacing[12] }}>{title}</Caption>
+      <View>
+        {items.map((item, idx) => (
+          <Body key={item} style={{ marginTop: idx > 0 ? tokens.spacing[8] : 0 }}>
             • {item}
-          </Text>
+          </Body>
         ))}
       </View>
     </Card>
@@ -918,18 +897,21 @@ function ProfileScreen({
   return (
     <Screen>
       <SafeAreaView style={{ flex: 1 }}>
-        <BackHeader title="Me" onBack={onBack} />
-        <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 90 }}>
-          <Card>
-            <H2>Optional profile</H2>
-            <Small style={{ marginTop: 8 }}>
-              Stored locally on your device. Don’t enter names, emails, or phone numbers.
-            </Small>
-          </Card>
+        <BackHeader title="Me 👤" onBack={onBack} />
+        <ScrollView contentContainerStyle={{ 
+          paddingHorizontal: tokens.spacing[16], 
+          paddingBottom: 90 
+        }}>
+          <Alert variant="info" style={{ marginBottom: tokens.spacing[16] }}>
+            <BodyStrong style={{ marginBottom: tokens.spacing[8] }}>Optional profile</BodyStrong>
+            <Caption>
+              Stored locally on your device. Don't enter names, emails, or phone numbers.
+            </Caption>
+          </Alert>
 
-        <Text style={{ fontSize: 13, color: "#444", marginTop: 16, marginBottom: 8 }}>
+        <Caption style={{ marginTop: tokens.spacing[16], marginBottom: tokens.spacing[8] }}>
           Country / Region (required to claim personalization)
-        </Text>
+        </Caption>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {COUNTRIES.map((c) => (
             <Chip
@@ -941,9 +923,9 @@ function ProfileScreen({
           ))}
         </ScrollView>
 
-        <Text style={{ fontSize: 13, color: "#444", marginTop: 16, marginBottom: 8 }}>
+        <Caption style={{ marginTop: tokens.spacing[16], marginBottom: tokens.spacing[8] }}>
           Industry
-        </Text>
+        </Caption>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {INDUSTRIES.map((i) => (
             <Chip
@@ -955,27 +937,19 @@ function ProfileScreen({
           ))}
         </ScrollView>
 
-        <Text style={{ fontSize: 13, color: "#444", marginTop: 16, marginBottom: 8 }}>
+        <Caption style={{ marginTop: tokens.spacing[16], marginBottom: tokens.spacing[8] }}>
           Current role or study field (optional)
-        </Text>
-        <TextInput
+        </Caption>
+        <UITextInput
           value={draft.roleOrStudy}
           onChangeText={(t) => setDraft((p) => ({ ...p, roleOrStudy: t }))}
           placeholder="e.g., Computer Science student, Junior analyst"
           autoCapitalize="sentences"
-          style={{
-            borderWidth: 1,
-            borderColor: "#ddd",
-            borderRadius: 10,
-            paddingHorizontal: 12,
-            paddingVertical: 10,
-            backgroundColor: "#fff",
-          }}
         />
 
-        <Text style={{ fontSize: 13, color: "#444", marginTop: 16, marginBottom: 8 }}>
+        <Caption style={{ marginTop: tokens.spacing[16], marginBottom: tokens.spacing[8] }}>
           Experience level (optional)
-        </Text>
+        </Caption>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {[
             { key: "student", label: "Student" },
@@ -991,27 +965,27 @@ function ProfileScreen({
           ))}
         </ScrollView>
 
-        <Text style={{ fontSize: 13, color: "#444", marginTop: 16, marginBottom: 8 }}>
+        <Caption style={{ marginTop: tokens.spacing[16], marginBottom: tokens.spacing[8] }}>
           Skills (optional, comma-separated)
-        </Text>
-        <TextInput
+        </Caption>
+        <UITextInput
           value={draft.skillsText}
           onChangeText={(t) => setDraft((p) => ({ ...p, skillsText: t }))}
           placeholder="e.g., Excel, SQL, communication"
           autoCapitalize="none"
-          style={{
-            borderWidth: 1,
-            borderColor: "#ddd",
-            borderRadius: 10,
-            paddingHorizontal: 12,
-            paddingVertical: 10,
-            backgroundColor: "#fff",
-          }}
         />
 
-          {status ? <Small style={{ marginTop: 12 }}>{status}</Small> : null}
+          {status ? (
+            <Alert variant="success" style={{ marginTop: tokens.spacing[16] }}>
+              <Caption>{status}</Caption>
+            </Alert>
+          ) : null}
 
-          <View style={{ flexDirection: "row", gap: 10, marginTop: 16 }}>
+          <View style={{ 
+            flexDirection: "row", 
+            gap: tokens.spacing[12], 
+            marginTop: tokens.spacing[24] 
+          }}>
             <View style={{ flex: 1 }}>
               <ButtonPrimary
                 label={profileLoaded ? "Save" : "Loading…"}
@@ -1023,7 +997,7 @@ function ProfileScreen({
               />
             </View>
             <View style={{ flex: 1 }}>
-              <ButtonGhost
+              <ButtonSecondary
                 label="Reset"
                 onPress={async () => {
                   setStatus(null);
@@ -1035,12 +1009,12 @@ function ProfileScreen({
             </View>
           </View>
 
-          <View style={{ marginTop: 16 }}>
-            <ButtonGhost label="Admin Review (MVP)" onPress={onOpenAdmin} />
-            <Small style={{ marginTop: 8 }}>
-              For testing moderation flows only. Not an end-user feature.
-            </Small>
-          </View>
+          <Divider />
+
+          <ButtonGhost label="Admin Review (MVP)" onPress={onOpenAdmin} />
+          <Caption style={{ marginTop: tokens.spacing[12], textAlign: "center" }}>
+            For testing moderation flows only. Not an end-user feature.
+          </Caption>
         </ScrollView>
       </SafeAreaView>
     </Screen>
@@ -1071,220 +1045,167 @@ function AdminReviewScreen({
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <BackHeader title="Admin Review (MVP)" onBack={onBack} />
-      <View style={{ paddingHorizontal: 16, paddingBottom: 12 }}>
-        <Text style={{ color: "#666", fontSize: 12, lineHeight: 16 }}>
-          MVP admin tools for Phase 1: approve/remove held posts, resolve reports, and apply
-          basic lock/ban actions. No analytics dashboard.
-        </Text>
+    <Screen>
+      <SafeAreaView style={{ flex: 1 }}>
+        <BackHeader title="Admin Review (MVP) 🛡️" onBack={onBack} />
+        <View style={{ 
+          paddingHorizontal: tokens.spacing[16], 
+          paddingBottom: tokens.spacing[16] 
+        }}>
+          <Alert variant="warning" style={{ marginBottom: tokens.spacing[16] }}>
+            <Caption>
+              MVP admin tools for Phase 1: approve/remove held posts, resolve reports, and apply
+              basic lock/ban actions. No analytics dashboard.
+            </Caption>
+          </Alert>
 
-        <View style={{ flexDirection: "row", marginTop: 12 }}>
-          <Chip label="Held" selected={tab === "held"} onPress={() => setTab("held")} />
-          <Chip
-            label="Reports"
-            selected={tab === "reports"}
-            onPress={() => setTab("reports")}
-          />
+          <View style={{ flexDirection: "row", marginBottom: tokens.spacing[16] }}>
+            <Chip label="Held" selected={tab === "held"} onPress={() => setTab("held")} />
+            <Chip
+              label="Reports"
+              selected={tab === "reports"}
+              onPress={() => setTab("reports")}
+            />
+          </View>
+
+          <Caption style={{ marginBottom: tokens.spacing[8] }}>
+            Reason code (internal)
+          </Caption>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {[
+              { key: "policy_violation", label: "Policy violation" },
+              { key: "doxxing", label: "Doxxing" },
+              { key: "hate", label: "Hate/harassment" },
+              { key: "illegal", label: "Illegal content" },
+              { key: "spam", label: "Spam" },
+              { key: "ok", label: "No issue" },
+            ].map((r) => (
+              <Chip
+                key={r.key}
+                label={r.label}
+                selected={r.key === reason}
+                onPress={() => setReason(r.key)}
+              />
+            ))}
+          </ScrollView>
         </View>
 
-        <Text style={{ fontSize: 13, color: "#444", marginTop: 12, marginBottom: 8 }}>
-          Reason code (internal)
-        </Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {[
-            { key: "policy_violation", label: "Policy violation" },
-            { key: "doxxing", label: "Doxxing" },
-            { key: "hate", label: "Hate/harassment" },
-            { key: "illegal", label: "Illegal content" },
-            { key: "spam", label: "Spam" },
-            { key: "ok", label: "No issue" },
-          ].map((r) => (
-            <Chip
-              key={r.key}
-              label={r.label}
-              selected={r.key === reason}
-              onPress={() => setReason(r.key)}
-            />
-          ))}
-        </ScrollView>
-      </View>
+        {tab === "held" ? (
+          <FlatList
+            data={heldPosts}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ 
+              paddingHorizontal: tokens.spacing[16], 
+              paddingBottom: tokens.spacing[24] 
+            }}
+            ListEmptyComponent={
+              <EmptyState
+                title="No held posts"
+                message="All posts are either visible or removed."
+              />
+            }
+            renderItem={({ item }) => (
+              <Card style={{ marginBottom: tokens.spacing[16] }}>
+                <H2>{item.title}</H2>
+                <Body style={{ marginTop: tokens.spacing[8] }} numberOfLines={3}>
+                  {item.body}
+                </Body>
+                {item.moderationReasons?.length ? (
+                  <Alert variant="warning" style={{ marginTop: tokens.spacing[12] }}>
+                    <Micro>Hold reasons: {item.moderationReasons.join(" | ")}</Micro>
+                  </Alert>
+                ) : null}
 
-      {tab === "held" ? (
-        <FlatList
-          data={heldPosts}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24 }}
-          ListEmptyComponent={
-            <Text style={{ color: "#444", paddingTop: 8 }}>
-              No held posts right now.
-            </Text>
-          }
-          renderItem={({ item }) => (
-            <View
-              style={{
-                borderWidth: 1,
-                borderColor: "#eee",
-                borderRadius: 12,
-                padding: 12,
-                marginBottom: 10,
-                backgroundColor: "#fff",
-              }}
-            >
-              <Text style={{ fontWeight: "800" }}>{item.title}</Text>
-              <Text style={{ marginTop: 6, color: "#444" }} numberOfLines={3}>
-                {item.body}
-              </Text>
-              {item.moderationReasons?.length ? (
-                <Text style={{ marginTop: 8, color: "#666", fontSize: 12 }}>
-                  Hold reasons: {item.moderationReasons.join(" | ")}
-                </Text>
-              ) : null}
-
-              <View style={{ flexDirection: "row", gap: 10, marginTop: 12 }}>
-                <Pressable
-                  onPress={() => onApprovePost(item.id, reason)}
-                  accessibilityRole="button"
-                  style={{
-                    flex: 1,
-                    paddingVertical: 10,
-                    borderRadius: 10,
-                    backgroundColor: "#111",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={{ color: "#fff", fontWeight: "800" }}>Approve</Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => onRemovePost(item.id, reason)}
-                  accessibilityRole="button"
-                  style={{
-                    flex: 1,
-                    paddingVertical: 10,
-                    borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: "#111",
-                    backgroundColor: "#fff",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={{ color: "#111", fontWeight: "800" }}>Remove</Text>
-                </Pressable>
-              </View>
-
-              <View style={{ flexDirection: "row", gap: 10, marginTop: 10 }}>
-                <Pressable
-                  onPress={() => onLock(item.companyId, item.category, reason)}
-                  accessibilityRole="button"
-                  style={{
-                    flex: 1,
-                    paddingVertical: 10,
-                    borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: "#ddd",
-                    backgroundColor: "#fff",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={{ color: "#111", fontWeight: "700" }}>Lock category</Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => onBanAuthorKey(item.authorKey, reason)}
-                  accessibilityRole="button"
-                  style={{
-                    flex: 1,
-                    paddingVertical: 10,
-                    borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: "#ddd",
-                    backgroundColor: "#fff",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={{ color: "#111", fontWeight: "700" }}>Ban author</Text>
-                </Pressable>
-              </View>
-            </View>
-          )}
-        />
-      ) : (
-        <FlatList
-          data={openReports}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24 }}
-          ListEmptyComponent={
-            <Text style={{ color: "#444", paddingTop: 8 }}>
-              No open reports right now.
-            </Text>
-          }
-          renderItem={({ item }) => {
-            const post = posts.find((p) => p.id === item.postId);
-            return (
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#eee",
-                  borderRadius: 12,
-                  padding: 12,
-                  marginBottom: 10,
-                  backgroundColor: "#fff",
-                }}
-              >
-                <Text style={{ fontWeight: "800" }}>Report: {item.reason}</Text>
-                <Text style={{ marginTop: 6, color: "#666", fontSize: 12 }}>
-                  {item.createdDate}
-                </Text>
-                {post ? (
-                  <>
-                    <Text style={{ marginTop: 10, fontWeight: "700" }}>{post.title}</Text>
-                    <Text style={{ marginTop: 6, color: "#444" }} numberOfLines={3}>
-                      {post.body}
-                    </Text>
-                  </>
-                ) : (
-                  <Text style={{ marginTop: 10, color: "#444" }}>
-                    Post not found (may have been removed).
-                  </Text>
-                )}
-
-                <View style={{ flexDirection: "row", gap: 10, marginTop: 12 }}>
-                  <Pressable
-                    onPress={() => onResolveReport(item.id)}
-                    accessibilityRole="button"
-                    style={{
-                      flex: 1,
-                      paddingVertical: 10,
-                      borderRadius: 10,
-                      borderWidth: 1,
-                      borderColor: "#111",
-                      backgroundColor: "#fff",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={{ color: "#111", fontWeight: "800" }}>Resolve</Text>
-                  </Pressable>
-                  {post ? (
-                    <Pressable
-                      onPress={() => onRemovePost(post.id, reason)}
-                      accessibilityRole="button"
-                      style={{
-                        flex: 1,
-                        paddingVertical: 10,
-                        borderRadius: 10,
-                        backgroundColor: "#111",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text style={{ color: "#fff", fontWeight: "800" }}>Remove post</Text>
-                    </Pressable>
-                  ) : null}
+                <View style={{ flexDirection: "row", gap: tokens.spacing[12], marginTop: tokens.spacing[16] }}>
+                  <View style={{ flex: 1 }}>
+                    <ButtonPrimary
+                      label="Approve"
+                      onPress={() => onApprovePost(item.id, reason)}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <ButtonDanger
+                      label="Remove"
+                      onPress={() => onRemovePost(item.id, reason)}
+                    />
+                  </View>
                 </View>
-              </View>
-            );
-          }}
-        />
-      )}
-    </SafeAreaView>
+
+                <View style={{ flexDirection: "row", gap: tokens.spacing[12], marginTop: tokens.spacing[12] }}>
+                  <View style={{ flex: 1 }}>
+                    <ButtonGhost
+                      label="Lock category"
+                      onPress={() => onLock(item.companyId, item.category, reason)}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <ButtonGhost
+                      label="Ban author"
+                      onPress={() => onBanAuthorKey(item.authorKey, reason)}
+                    />
+                  </View>
+                </View>
+              </Card>
+            )}
+          />
+        ) : (
+          <FlatList
+            data={openReports}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ 
+              paddingHorizontal: tokens.spacing[16], 
+              paddingBottom: tokens.spacing[24] 
+            }}
+            ListEmptyComponent={
+              <EmptyState
+                title="No open reports"
+                message="All reports have been resolved."
+              />
+            }
+            renderItem={({ item }) => {
+              const post = posts.find((p) => p.id === item.postId);
+              return (
+                <Card style={{ marginBottom: tokens.spacing[16] }}>
+                  <BodyStrong>Report: {item.reason}</BodyStrong>
+                  <Caption style={{ marginTop: tokens.spacing[4] }}>
+                    {item.createdDate}
+                  </Caption>
+                  {post ? (
+                    <>
+                      <H2 style={{ marginTop: tokens.spacing[12] }}>{post.title}</H2>
+                      <Body style={{ marginTop: tokens.spacing[8] }} numberOfLines={3}>
+                        {post.body}
+                      </Body>
+                    </>
+                  ) : (
+                    <Caption style={{ marginTop: tokens.spacing[12] }}>
+                      Post not found (may have been removed).
+                    </Caption>
+                  )}
+
+                  <View style={{ flexDirection: "row", gap: tokens.spacing[12], marginTop: tokens.spacing[16] }}>
+                    <View style={{ flex: 1 }}>
+                      <ButtonSecondary
+                        label="Resolve"
+                        onPress={() => onResolveReport(item.id)}
+                      />
+                    </View>
+                    {post ? (
+                      <View style={{ flex: 1 }}>
+                        <ButtonDanger
+                          label="Remove post"
+                          onPress={() => onRemovePost(post.id, reason)}
+                        />
+                      </View>
+                    ) : null}
+                  </View>
+                </Card>
+              );
+            }}
+          />
+        )}
+      </SafeAreaView>
+    </Screen>
   );
 }
 

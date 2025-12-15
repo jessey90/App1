@@ -1,0 +1,372 @@
+{
+  "meta": {
+    "name": "Clean Neutral SaaS Light UI",
+    "source": "Extracted from provided screenshot (component gallery style)",
+    "purpose": "High-level design system spec to let AI replicate the look consistently across the app.",
+    "scope": "Light mode only. Component-level guidelines and tokens; not implementation code.",
+    "tone": [
+      "clean",
+      "neutral",
+      "trustworthy",
+      "content-first",
+      "calm",
+      "modern SaaS"
+    ]
+  },
+  "designPrinciples": {
+    "overall": [
+      "Prioritize clarity and legibility over decoration.",
+      "Use whitespace and alignment to create structure; avoid heavy ornament.",
+      "Use soft elevation and rounded corners to communicate interactivity.",
+      "Reserve saturated color for emphasis and state—most UI stays neutral.",
+      "Design for long sessions: low visual noise, predictable hierarchy."
+    ],
+    "visualStyle": {
+      "surfaceLanguage": "Predominantly white with subtle tinted surfaces; cards float slightly above background using soft shadow + light border.",
+      "cornerPhilosophy": "Rounded corners everywhere, consistent radii; small elements use pills.",
+      "shadowPhilosophy": "Shadows are soft, wide, and low-contrast (no harsh drop shadows).",
+      "borderPhilosophy": "Thin, light borders used for structure; borders rarely exceed 1px."
+    },
+    "interaction": {
+      "hover": "If on web, hover slightly increases elevation and border contrast; no color flashing.",
+      "pressed": "Pressed state slightly darkens background and compresses elevation by 1 level.",
+      "focus": "Accessible focus ring using primary brand color at low alpha; 2–3px ring with offset."
+    },
+    "contentFirstRules": [
+      "Text content gets priority in spacing and contrast.",
+      "Metadata (timestamps, counts, status) is smaller and lighter, never competing with titles.",
+      "Actions are grouped and visually separated from content blocks."
+    ]
+  },
+  "layout": {
+    "grid": {
+      "type": "8pt grid",
+      "baseUnitPx": 8,
+      "recommendedSpacingPx": [4, 8, 12, 16, 20, 24, 32, 40, 48, 64]
+    },
+    "pageStructure": {
+      "defaultMaxContentWidthPx": 1120,
+      "gutterPx": 24,
+      "sectionSpacingPx": 24,
+      "cardSpacingPx": 12
+    },
+    "density": {
+      "default": "comfortable",
+      "compact": "reduce vertical padding by 25% while maintaining tap targets",
+      "touchTargets": {
+        "minHeightPx": 44,
+        "minWidthPx": 44
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "primary": "System UI / SF Pro / Inter (fallback to system)",
+      "monospace": "SF Mono / ui-monospace (fallback)"
+    },
+    "scale": {
+      "display": { "sizePx": 28, "lineHeightPx": 34, "weight": 700, "letterSpacing": -0.2 },
+      "h1": { "sizePx": 22, "lineHeightPx": 28, "weight": 700, "letterSpacing": -0.1 },
+      "h2": { "sizePx": 18, "lineHeightPx": 24, "weight": 600, "letterSpacing": -0.05 },
+      "body": { "sizePx": 14, "lineHeightPx": 20, "weight": 400, "letterSpacing": 0 },
+      "bodyStrong": { "sizePx": 14, "lineHeightPx": 20, "weight": 600, "letterSpacing": 0 },
+      "caption": { "sizePx": 12, "lineHeightPx": 16, "weight": 500, "letterSpacing": 0 },
+      "micro": { "sizePx": 11, "lineHeightPx": 14, "weight": 500, "letterSpacing": 0.1 }
+    },
+    "rules": [
+      "Use strong weight for titles and CTAs; keep body text regular for readability.",
+      "Avoid large blocks of ALL CAPS; use sentence case for approachability.",
+      "Use tabular numbers for counters and metrics where possible."
+    ]
+  },
+  "color": {
+    "mode": "light",
+    "neutrals": {
+      "background": "#FFFFFF",
+      "surface": "#F7F8FA",
+      "card": "#FFFFFF",
+      "mutedSurface": "#F2F4F7",
+      "border": "#E6E8EE",
+      "divider": "#E6E8EE",
+      "textPrimary": "#0B1220",
+      "textSecondary": "#475467",
+      "textMuted": "#667085",
+      "icon": "#344054",
+      "disabledText": "#98A2B3",
+      "disabledBg": "#F2F4F7"
+    },
+    "brand": {
+      "primary": {
+        "50": "#EEF2FF",
+        "100": "#E0E7FF",
+        "200": "#C7D2FE",
+        "300": "#A5B4FC",
+        "400": "#818CF8",
+        "500": "#6366F1",
+        "600": "#4F46E5",
+        "700": "#4338CA",
+        "800": "#3730A3",
+        "900": "#312E81"
+      },
+      "accentUsage": {
+        "primaryCTA": "brand.primary.600",
+        "hover": "brand.primary.700",
+        "pressed": "brand.primary.800",
+        "subtleBg": "brand.primary.50",
+        "subtleBorder": "brand.primary.200",
+        "focusRing": "brand.primary.500 @ 24% alpha"
+      }
+    },
+    "semantic": {
+      "success": {
+        "bg": "#ECFDF3",
+        "border": "#ABEFC6",
+        "text": "#067647",
+        "solid": "#12B76A"
+      },
+      "warning": {
+        "bg": "#FFFAEB",
+        "border": "#FEDF89",
+        "text": "#B54708",
+        "solid": "#F79009"
+      },
+      "danger": {
+        "bg": "#FEF3F2",
+        "border": "#FECDCA",
+        "text": "#B42318",
+        "solid": "#F04438"
+      },
+      "info": {
+        "bg": "#EFF8FF",
+        "border": "#B2DDFF",
+        "text": "#175CD3",
+        "solid": "#2E90FA"
+      }
+    },
+    "rules": [
+      "Default UI uses neutrals; brand color is used for primary actions and selected states.",
+      "Semantic colors are used for status chips, alerts, and feedback; keep them low-saturation in background form.",
+      "Avoid using pure black for large filled surfaces; keep black for text emphasis only.",
+      "Maintain WCAG contrast: text on white should be near-black; muted text remains readable."
+    ]
+  },
+  "radii": {
+    "xs": 8,
+    "sm": 10,
+    "md": 12,
+    "lg": 16,
+    "xl": 20,
+    "pill": 999
+  },
+  "borders": {
+    "widthPx": 1,
+    "style": "solid",
+    "color": "color.neutrals.border",
+    "focusRing": {
+      "widthPx": 3,
+      "color": "color.brand.primary.500",
+      "alpha": 0.24,
+      "offsetPx": 2
+    }
+  },
+  "elevation": {
+    "shadowStyle": "soft, diffused, low-contrast",
+    "levels": {
+      "0": { "shadowOpacity": 0, "shadowRadius": 0, "shadowOffsetY": 0, "elevation": 0 },
+      "1": { "shadowOpacity": 0.06, "shadowRadius": 10, "shadowOffsetY": 4, "elevation": 1 },
+      "2": { "shadowOpacity": 0.08, "shadowRadius": 16, "shadowOffsetY": 8, "elevation": 2 },
+      "3": { "shadowOpacity": 0.1, "shadowRadius": 24, "shadowOffsetY": 12, "elevation": 3 }
+    },
+    "usage": {
+      "pageCards": 1,
+      "dropdownsPopovers": 2,
+      "modals": 3,
+      "pressed": "subtract 1 level from current"
+    }
+  },
+  "componentGuidelines": {
+    "buttons": {
+      "sizes": {
+        "large": { "heightPx": 48, "paddingX": 18, "radius": "radii.md", "textStyle": "typography.scale.bodyStrong" },
+        "medium": { "heightPx": 40, "paddingX": 16, "radius": "radii.sm", "textStyle": "typography.scale.bodyStrong" },
+        "small": { "heightPx": 32, "paddingX": 12, "radius": "radii.sm", "textStyle": "typography.scale.caption" },
+        "tiny": { "heightPx": 26, "paddingX": 10, "radius": "radii.xs", "textStyle": "typography.scale.micro" }
+      },
+      "variants": {
+        "primary": {
+          "bg": "color.brand.primary.600",
+          "text": "#FFFFFF",
+          "border": "transparent",
+          "icon": "#FFFFFF"
+        },
+        "secondary": {
+          "bg": "color.neutrals.mutedSurface",
+          "text": "color.neutrals.textPrimary",
+          "border": "color.neutrals.border"
+        },
+        "ghost": {
+          "bg": "transparent",
+          "text": "color.neutrals.textPrimary",
+          "border": "color.neutrals.border"
+        },
+        "danger": {
+          "bg": "color.semantic.danger.solid",
+          "text": "#FFFFFF",
+          "border": "transparent"
+        }
+      },
+      "icons": {
+        "leadingIcon": "Allowed in large/medium buttons; 16–18px; 8px gap",
+        "trailingIcon": "Allowed; avoid both leading and trailing unless necessary"
+      },
+      "rules": [
+        "Primary buttons are used for the single highest-intent action in a context.",
+        "Keep multiple primary buttons on a screen to a minimum; prefer secondary/ghost for alternatives.",
+        "Buttons have consistent corner radius and no heavy shadows; rely on color and subtle elevation."
+      ]
+    },
+    "chipsAndTags": {
+      "shape": "pill",
+      "padding": { "x": 10, "y": 6 },
+      "textStyle": "typography.scale.micro",
+      "default": { "bg": "color.neutrals.mutedSurface", "text": "color.neutrals.textSecondary", "border": "transparent" },
+      "selected": { "bg": "color.brand.primary.50", "text": "color.brand.primary.700", "border": "color.brand.primary.200" },
+      "statuses": {
+        "success": { "bg": "color.semantic.success.bg", "text": "color.semantic.success.text", "border": "color.semantic.success.border" },
+        "warning": { "bg": "color.semantic.warning.bg", "text": "color.semantic.warning.text", "border": "color.semantic.warning.border" },
+        "danger": { "bg": "color.semantic.danger.bg", "text": "color.semantic.danger.text", "border": "color.semantic.danger.border" },
+        "info": { "bg": "color.semantic.info.bg", "text": "color.semantic.info.text", "border": "color.semantic.info.border" }
+      },
+      "rules": [
+        "Chips are low-emphasis; never compete with titles.",
+        "Use semantic colors for status, not decoration.",
+        "Avoid long chip text; truncate or wrap in tooltips if needed."
+      ]
+    },
+    "cards": {
+      "bg": "color.neutrals.card",
+      "border": "color.neutrals.border",
+      "radius": "radii.lg",
+      "paddingPx": 16,
+      "elevation": 1,
+      "header": {
+        "titleStyle": "typography.scale.h2",
+        "metaStyle": "typography.scale.caption",
+        "actions": "Top-right actions are small/ghost buttons or icon buttons"
+      },
+      "rules": [
+        "Cards group related information; avoid nested cards deeper than 2 levels.",
+        "Prefer dividers and spacing over heavy outlines.",
+        "Clickable cards should show hover/pressed feedback via elevation and subtle border change."
+      ]
+    },
+    "listsAndRows": {
+      "rowHeightPx": 56,
+      "rowPaddingX": 16,
+      "rowGapPx": 10,
+      "avatarSizePx": 32,
+      "rules": [
+        "List items use consistent left alignment for avatar/title/meta.",
+        "Secondary columns (counts/status) align to the right and are visually lighter.",
+        "Use dividers sparingly; prefer card separation when possible."
+      ]
+    },
+    "inputs": {
+      "field": {
+        "heightPx": 44,
+        "radius": "radii.md",
+        "bg": "#FFFFFF",
+        "border": "color.neutrals.border",
+        "text": "color.neutrals.textPrimary",
+        "placeholder": "color.neutrals.textMuted",
+        "paddingX": 12
+      },
+      "search": {
+        "leadingIcon": true,
+        "clearButton": true,
+        "bg": "color.neutrals.mutedSurface"
+      },
+      "rules": [
+        "Inputs should feel light and tidy; avoid thick borders.",
+        "Focus ring uses brand color at low alpha.",
+        "Error state uses semantic danger border + helper text; avoid large red fills."
+      ]
+    },
+    "navigation": {
+      "tabs": {
+        "style": "pill/segmented control",
+        "selectedBg": "color.brand.primary.600",
+        "selectedText": "#FFFFFF",
+        "unselectedBg": "color.neutrals.mutedSurface",
+        "unselectedText": "color.neutrals.textSecondary",
+        "radius": "radii.md"
+      },
+      "sideNav": {
+        "iconSizePx": 18,
+        "itemHeightPx": 40,
+        "selectedIndicator": "Left bar or subtle bg tint",
+        "selectedBg": "color.brand.primary.50"
+      }
+    },
+    "emptyStates": {
+      "illustrationStyle": "light, outline, low-contrast; friendly but not childish",
+      "titleStyle": "typography.scale.h2",
+      "bodyStyle": "typography.scale.body",
+      "cta": "Use a single primary button, centered"
+    },
+    "alerts": {
+      "banner": {
+        "radius": "radii.lg",
+        "paddingPx": 12,
+        "iconSizePx": 16,
+        "layout": "icon + text + optional actions",
+        "default": "info"
+      },
+      "rules": [
+        "Alerts use tinted backgrounds, not saturated fills.",
+        "Keep alert copy short; provide clear next action if needed."
+      ]
+    },
+    "tablesAndMetrics": {
+      "table": {
+        "headerText": "typography.scale.caption",
+        "cellText": "typography.scale.body",
+        "rowDivider": "color.neutrals.divider",
+        "rowHover": "color.neutrals.mutedSurface"
+      },
+      "progress": {
+        "track": "color.neutrals.border",
+        "fill": "color.brand.primary.600",
+        "radius": "radii.pill"
+      }
+    },
+    "icons": {
+      "style": "simple, rounded, consistent stroke width; minimal detail",
+      "strokeWidthPx": 2,
+      "sizesPx": [16, 18, 20, 24],
+      "color": "color.neutrals.icon",
+      "coloredIcons": "Use only for semantic meaning or app illustration blocks; keep most icons neutral."
+    }
+  },
+  "copyAndTone": {
+    "voice": [
+      "plain",
+      "direct",
+      "friendly",
+      "non-preachy"
+    ],
+    "guidelines": [
+      "Use short labels for buttons (1–2 words).",
+      "Use sentence case for most UI text.",
+      "Avoid overly playful slang; keep it modern and stable."
+    ]
+  },
+  "doNotDo": [
+    "Do not use harsh shadows or strong gradients as primary decoration.",
+    "Do not mix many saturated colors on one screen; keep brand + one semantic color if needed.",
+    "Do not use heavy borders or outlines everywhere—use whitespace first.",
+    "Do not create inconsistent corner radii across components."
+  ]
+}
+
+

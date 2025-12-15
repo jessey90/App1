@@ -7,7 +7,7 @@ Prove the core value of the product by delivering:
 - **Anonymous company insights** (community-driven gossip/insider knowledge) that users can read and contribute to safely.
 - **Basic future job guidance** that translates major labor market signals into plain language and tailors the result to a minimal user profile.
 
-**Official Product Name (Phase 1 MVP): Anonymous Gossip Corporate**
+**Official Product Name (Phase 1 MVP): Anonymous Company Reviews**
 
 ### Success Definition (What Proves the MVP Works)
 Phase 1 is successful if, in limited testing, users can:

@@ -3,7 +3,7 @@
 ## 1. Product Overview
 
 ### 1.1 Product Name (Working Title)
-**Anonymous Gossip Corporate**
+**Anonymous Company Reviews**
 
 ### 1.2 Platforms
 - **iOS**

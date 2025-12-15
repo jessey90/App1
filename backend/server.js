@@ -51,7 +51,6 @@ const server = http.createServer((req, res) => {
     const post = posts.find((p) => p.id === postId);
     if (!post) return sendJson(res, 404, { error: "post_not_found" });
     return sendJson(res, 200, { post });
-    return;
   }
 
   return sendJson(res, 404, { error: "not_found" });
