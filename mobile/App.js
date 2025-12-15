@@ -132,10 +132,10 @@ function CompanyListScreen({ onSelect }) {
           paddingBottom: tokens.spacing[16] 
         }}>
           <Display style={{ marginBottom: tokens.spacing[8] }}>
-            Anonymous Company Reviews
+            Anonymous 👀 Company Reviews
           </Display>
           <P style={{ marginBottom: tokens.spacing[16] }}>
-            Anonymous, community-led insights.
+            Share yours. Anonymously.
           </P>
           <UITextInput
             value={query}
@@ -799,7 +799,7 @@ function FutureJobsScreen({ onBack, onEditProfile, profile, profileLoaded }) {
   return (
     <Screen>
       <SafeAreaView style={{ flex: 1 }}>
-        <BackHeader title="Future Jobs 🔮" onBack={onBack} />
+        <BackHeader title="Your Future Jobs 🔮" onBack={onBack} />
         <ScrollView contentContainerStyle={{ 
           paddingHorizontal: tokens.spacing[16], 
           paddingBottom: 90 
@@ -816,7 +816,7 @@ function FutureJobsScreen({ onBack, onEditProfile, profile, profileLoaded }) {
             </View>
           </View>
 
-          <Alert variant="info" style={{ marginBottom: tokens.spacing[16] }}>
+          {/* <Alert variant="info" style={{ marginBottom: tokens.spacing[16] }}>
             <BodyStrong style={{ marginBottom: tokens.spacing[8] }}>
               Plain-language, not a promise
             </BodyStrong>
@@ -824,7 +824,7 @@ function FutureJobsScreen({ onBack, onEditProfile, profile, profileLoaded }) {
               This is a simplified, rules-based view using a small curated dataset inspired by
               WEF Future of Jobs themes. It is not a guarantee or prediction.
             </Caption>
-          </Alert>
+          </Alert> */}
 
         <Card style={{ marginBottom: tokens.spacing[16] }}>
           <Caption>
