@@ -2,7 +2,11 @@
  * Milestones 2–3:
  * - Read-only mock data + in-memory posting additions.
  * - No user identities, no usernames.
+ * 
+ * Phase 1 MVP: Integrated with top 1000 companies dataset
  */
+
+import { getAllCompanies } from "./companiesData";
 
 export const CATEGORIES = [
   { key: "red_flags", label: "Red Flags" },
@@ -13,88 +17,134 @@ export const CATEGORIES = [
   { key: "career_growth_reality", label: "Career Growth Reality" },
 ];
 
-export const companies = [
-  { id: "c_acme", name: "Acme Corp" },
-  { id: "c_globex", name: "Globex" },
-  { id: "c_initech", name: "Initech" },
-  { id: "c_umbrella", name: "Umbrella Group" },
-];
+// Load companies from dataset (top 1000 by number of employees)
+export const companies = getAllCompanies();
 
+// Seed posts using real company IDs from dataset
 // Notes:
 // - `score` is used only for "Top" sorting in MVP read/browse.
 // - `createdDate` is day-level only to avoid overly precise timestamps.
+// - Company IDs now reference top companies from the dataset
 export const posts = [
   {
     id: "p_001",
-    companyId: "c_acme",
+    companyId: "amazon", // Amazon (rank #2)
     category: "red_flags",
-    title: "Culture is performance-theater heavy",
+    title: "High pace culture—not for everyone",
     body:
-      "Lots of status updates and visibility games. Great for extroverts, exhausting for everyone else. Clarify expectations early.",
+      "Expectations are intense. You need to be comfortable with ambiguity and fast iteration. Document everything and manage up proactively.",
     status: "visible",
     authorKey: "seed_1",
     createdDate: "2025-12-01",
-    score: 24,
+    score: 34,
   },
   {
     id: "p_002",
-    companyId: "c_acme",
+    companyId: "amazon",
     category: "interview_process",
-    title: "Interview loop: fast but inconsistent",
+    title: "Bar raiser process is thorough",
     body:
-      "Two rounds plus a take-home. Different interviewers asked overlapping questions. Push for clarity on role scope.",
+      "Multiple loops with different teams. Prepare STAR stories for leadership principles. Expect 5-6 hours of interviews total.",
     status: "visible",
     authorKey: "seed_2",
     createdDate: "2025-11-18",
-    score: 12,
+    score: 28,
   },
   {
     id: "p_003",
-    companyId: "c_globex",
+    companyId: "walmart", // Walmart (rank #1)
     category: "green_flags",
-    title: "Mentorship exists (if you ask)",
+    title: "Benefits are solid for retail",
     body:
-      "There are good senior people, but no formal program. Book time proactively and you’ll get support.",
+      "Healthcare coverage starts on day one. Education benefits and career development programs are real if you use them.",
     status: "visible",
     authorKey: "seed_3",
     createdDate: "2025-11-25",
-    score: 18,
+    score: 22,
   },
   {
     id: "p_004",
-    companyId: "c_globex",
+    companyId: "walmart",
     category: "salary_reality",
-    title: "Salary bands are real—negotiate inside them",
+    title: "Retail wages improved but vary by location",
     body:
-      "Comp is structured; you can move within a band with evidence. Bring competing offers if possible.",
+      "Starting pay increased company-wide, but COL adjustments matter. Check local rates before accepting.",
     status: "visible",
     authorKey: "seed_4",
     createdDate: "2025-10-30",
-    score: 9,
-  },
-  {
-    id: "p_005",
-    companyId: "c_initech",
-    category: "management_politics",
-    title: "Reorgs are frequent; keep your work visible",
-    body:
-      "Direction shifts quarterly. Document impact and share updates widely. It helps during reshuffles.",
-    status: "visible",
-    authorKey: "seed_5",
-    createdDate: "2025-12-05",
     score: 15,
   },
   {
-    id: "p_006",
-    companyId: "c_umbrella",
-    category: "career_growth_reality",
-    title: "Growth is possible but self-driven",
+    id: "p_005",
+    companyId: "microsoft", // Microsoft
+    category: "management_politics",
+    title: "Manager quality varies widely",
     body:
-      "Promotions are not automatic. Ask for a rubric, then track your progress against it.",
+      "Your experience depends heavily on your direct manager. Ask about team dynamics during interviews.",
+    status: "visible",
+    authorKey: "seed_5",
+    createdDate: "2025-12-05",
+    score: 19,
+  },
+  {
+    id: "p_006",
+    companyId: "microsoft",
+    category: "career_growth_reality",
+    title: "Internal mobility is encouraged",
+    body:
+      "After 18 months you can transfer internally. Explore before committing long-term. Promotions follow a clear rubric.",
     status: "visible",
     authorKey: "seed_6",
     createdDate: "2025-11-08",
-    score: 11,
+    score: 26,
+  },
+  {
+    id: "p_007",
+    companyId: "apple", // Apple
+    category: "red_flags",
+    title: "Secrecy culture can be isolating",
+    body:
+      "Teams are siloed. You won't know what adjacent teams are building. If you need cross-team collaboration, clarify early.",
+    status: "visible",
+    authorKey: "seed_7",
+    createdDate: "2025-11-15",
+    score: 31,
+  },
+  {
+    id: "p_008",
+    companyId: "google-alphabet", // Google
+    category: "green_flags",
+    title: "Learning resources are endless",
+    body:
+      "Internal tech talks, reading groups, and senior mentorship if you seek it out. Take advantage early.",
+    status: "visible",
+    authorKey: "seed_8",
+    createdDate: "2025-11-20",
+    score: 29,
+  },
+  {
+    id: "p_009",
+    companyId: "tesla", // Tesla
+    category: "management_politics",
+    title: "Fast-moving but expect long hours",
+    body:
+      "Mission-driven culture attracts true believers. Work-life balance is not the priority. Know what you're signing up for.",
+    status: "visible",
+    authorKey: "seed_9",
+    createdDate: "2025-12-03",
+    score: 17,
+  },
+  {
+    id: "p_010",
+    companyId: "meta-facebook", // Meta
+    category: "salary_reality",
+    title: "Comp is top-tier but tied to stock",
+    body:
+      "Base + RSUs make up total comp. Refreshers depend on performance. Understand your equity vesting schedule.",
+    status: "visible",
+    authorKey: "seed_10",
+    createdDate: "2025-11-10",
+    score: 33,
   },
 ];
 
